@@ -1,0 +1,55 @@
+[gd_scene load_steps=9 format=3 uid="uid://e6wnwgruguub"]
+
+[ext_resource type="Texture2D" uid="uid://emfpf53vcqqo" path="res://assets/textures/grids/dark/texture_05.png" id="1_2p8vk"]
+[ext_resource type="Texture2D" uid="uid://c4mx455sh87fh" path="res://assets/hdris/kloofendal_48d_partly_cloudy_puresky_2k.hdr" id="1_bak3k"]
+[ext_resource type="PackedScene" uid="uid://cdepjmbrygh5j" path="res://Scenes/player.tscn" id="3_5ym6p"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3jgtj"]
+albedo_texture = ExtResource("1_2p8vk")
+uv1_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ghe8p"]
+albedo_color = Color(0.171717, 0.214058, 0.487794, 1)
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_fljw1"]
+panorama = ExtResource("1_bak3k")
+
+[sub_resource type="Sky" id="Sky_jmc8c"]
+sky_material = SubResource("PanoramaSkyMaterial_fljw1")
+
+[sub_resource type="Environment" id="Environment_awu2j"]
+background_mode = 2
+sky = SubResource("Sky_jmc8c")
+tonemap_mode = 2
+glow_enabled = true
+fog_density = 0.005
+
+[node name="World" type="Node3D"]
+
+[node name="stage" type="Node3D" parent="."]
+
+[node name="floor" type="CSGBox3D" parent="stage"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, -0.5, 2.08165e-12)
+material_override = SubResource("StandardMaterial3D_3jgtj")
+use_collision = true
+size = Vector3(77.3623, 1, 93.2244)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="stage"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.2494, 1.1369, -4.64009)
+use_collision = true
+collision_mask = 3
+size = Vector3(1.65039, 2.26147, 2.99414)
+material = SubResource("StandardMaterial3D_ghe8p")
+
+[node name="env" type="Node3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="env"]
+environment = SubResource("Environment_awu2j")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="env"]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+light_color = Color(0.753383, 0.753383, 0.753383, 1)
+shadow_enabled = true
+
+[node name="Player" parent="." instance=ExtResource("3_5ym6p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.08165e-12, 2.08165e-12)
